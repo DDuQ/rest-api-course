@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35122.118
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.Getting started", "1.Getting started", "{EEF345D4-497A-48E3-B1D8-58AD3F22BCC8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movies.API", "Movies.API\Movies.API.csproj", "{638FB9D1-9B7C-4821-9E04-40671A2D39A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movies.Application", "Movies.Application\Movies.Application.csproj", "{D116F326-B03B-403E-A13E-C4AF02C6D7FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movies.Contracts", "Movies.Contracts\Movies.Contracts.csproj", "{7945FE8E-940E-49E3-B672-B3CBEAF45313}"
+EndProject
+Global
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8A9D7EEF-4F4F-4416-B8A2-5B7803E76A55}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{638FB9D1-9B7C-4821-9E04-40671A2D39A1} = {EEF345D4-497A-48E3-B1D8-58AD3F22BCC8}
+		{D116F326-B03B-403E-A13E-C4AF02C6D7FF} = {EEF345D4-497A-48E3-B1D8-58AD3F22BCC8}
+		{7945FE8E-940E-49E3-B672-B3CBEAF45313} = {EEF345D4-497A-48E3-B1D8-58AD3F22BCC8}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "3D1kz8ICry4=",
+  "success": true,
+  "projectFilePath": "D:\\Repositories\\RestAPIs-PoC\\RestAPIs-PoC\\Movies.Application\\Movies.Application.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\esteb\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\9.0.2\\microsoft.extensions.dependencyinjection.9.0.2.nupkg.sha512",
+    "C:\\Users\\esteb\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\9.0.2\\microsoft.extensions.dependencyinjection.abstractions.9.0.2.nupkg.sha512"
+  ],
+  "logs": []
+}
