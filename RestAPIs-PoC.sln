@@ -24,5 +24,14 @@ Global
 		{7945FE8E-940E-49E3-B672-B3CBEAF45313} = {EEF345D4-497A-48E3-B1D8-58AD3F22BCC8}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{638FB9D1-9B7C-4821-9E04-40671A2D39A1}.|Any CPU.ActiveCfg = |Any CPU
+		{638FB9D1-9B7C-4821-9E04-40671A2D39A1}.|Any CPU.Build.0 = |Any CPU
+		{D116F326-B03B-403E-A13E-C4AF02C6D7FF}.|Any CPU.ActiveCfg = |Any CPU
+		{D116F326-B03B-403E-A13E-C4AF02C6D7FF}.|Any CPU.Build.0 = |Any CPU
+		{7945FE8E-940E-49E3-B672-B3CBEAF45313}.|Any CPU.ActiveCfg = |Any CPU
+		{7945FE8E-940E-49E3-B672-B3CBEAF45313}.|Any CPU.Build.0 = |Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		|Any CPU = |Any CPU
 	EndGlobalSection
 EndGlobal
