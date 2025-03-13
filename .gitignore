@@ -7,6 +7,13 @@
 *.suo
 *.userprefs
 
+.idea/*
+*.sln.DotSettings
+
+# .NET build directories
+bin/
+obj/
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
@@ -32,9 +39,6 @@ packages/
 *.app
 *.apk
 *.ipa
-
-# Ignore Visual Studio for Mac files
-.vscode/
 
 # Ignore JetBrains Rider (or other JetBrains tools)
 .idea/
