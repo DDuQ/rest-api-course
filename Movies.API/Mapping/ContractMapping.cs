@@ -11,7 +11,7 @@ public static class ContractMapping
         return new Movie()
         {
             Title = source.Title,
-            Genres = source.Genres,
+            Genres = source.Genres.ToList(),
             Id = Guid.NewGuid(),
             YearOfRelease = source.YearOfRelease
         };
@@ -23,6 +23,7 @@ public static class ContractMapping
         {
             Title = source.Title,
             Genres = source.Genres,
+            Slug = source.Slug,
             Id = Guid.NewGuid(),
             YearOfRelease = source.YearOfRelease
         };
@@ -42,7 +43,7 @@ public static class ContractMapping
         {
             Id = id,
             Title = source.Title,
-            Genres = source.Genres,
+            Genres = source.Genres.ToList(),
             YearOfRelease = source.YearOfRelease
         };
     }
