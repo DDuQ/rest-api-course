@@ -13,6 +13,8 @@
 # .NET build directories
 bin/
 obj/
+*.obj
+
 
 # Build results
 [Dd]ebug/
