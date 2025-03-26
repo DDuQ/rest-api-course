@@ -134,9 +134,19 @@ public class MovieRepository : IMovieRepository
     )
     {
         using var connection = await _dbConnectionFactory.CreateConnectionAsync(token);
+
+        var orderClause = string.Empty;
+        if (options.SortField is not null)
+        {
+            orderClause = $"""
+                           , m.{options.SortField} 
+                           order by {(options.SortOrder == SortOrder.Ascending ? "asc" : "desc")}
+                           """;
+        }
+        
         var result = await connection.QueryAsync(
             new CommandDefinition(
-                """
+                $"""
                 select m.*, 
                        string_agg(g.name,",") as genres, 
                        round(avg(r.rating),1) as rating, 
@@ -147,7 +157,7 @@ public class MovieRepository : IMovieRepository
                 left join ratings myr on m.id = myr.movieid and myr.userid = @userId
                 where (@title is null or m.title like ('%' || @title || '%'))
                 where (@yearofrelease is null or m.yearofrelease = @yearofrelease)
-                group by id, userrating
+                group by id, userrating {orderClause}
                 """,
                 new
                 {
