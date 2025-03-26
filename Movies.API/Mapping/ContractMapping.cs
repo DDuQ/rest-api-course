@@ -59,4 +59,19 @@ public static class ContractMapping
             YearOfRelease = source.YearOfRelease
         };
     }
+
+    public static GetAllMoviesOptions MapToOptions(this GetAllMoviesRequest source)
+    {
+        return new GetAllMoviesOptions()
+        {
+            Title = source.Title,
+            YearOfRelease = source.Year
+        };
+    }
+
+    public static GetAllMoviesOptions WithUser(this GetAllMoviesOptions source, Guid? userId)
+    {
+        source.UserId = userId;
+        return source;
+    }
 }
