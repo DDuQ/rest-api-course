@@ -24,43 +24,52 @@ public class MovieRepository : IMovieRepository
                 insert into movies (id, slug, title, yearofrelease)
                 values(@Id, @Slug, @Title, @YearOfRelease)
                 """,
-                movie, cancellationToken: token
+                movie,
+                cancellationToken: token
             )
         );
 
         if (result > 0)
-        {
             foreach (var genre in movie.Genres)
-            {
                 await connection.ExecuteAsync(
                     new CommandDefinition(
                         """
-                        insert into genres (movie.id, name)
+                        insert into genres (movieId, name)
                         values (@MovieId, @Name)
                         """,
                         new { MovieId = movie.Id, Name = genre },
                         cancellationToken: token
                     )
                 );
-            }
-        }
 
         transaction.Commit();
         return result > 0;
     }
 
-    public async Task<Movie?> GetByIdAsync(Guid id, CancellationToken token = default)
+    public async Task<Movie?> GetByIdAsync(
+        Guid id,
+        Guid? userId = null,
+        CancellationToken token = default
+    )
     {
         using var connection = await _dbConnectionFactory.CreateConnectionAsync(token);
         var movie = await connection.QuerySingleOrDefaultAsync<Movie>(
-            """SELECT * FROM movies WHERE id = @id""",
-            new { id }
+            new CommandDefinition(
+                """
+                SELECT m.*, round(avg(r.rating),1) as rating, myr.rating as userrating
+                FROM movies
+                left join ratings r on m.id = r.movieid
+                left join ratings myr on m.id = myr.movieid and myr.userid = @userId
+                WHERE id = @id
+                GROUP BY id, userrating
+                """,
+                new { id, userId },
+                cancellationToken: token
+            )
         );
 
         if (movie is null)
-        {
             return null;
-        }
 
         var genres = await connection.QueryAsync<string>(
             new CommandDefinition(
@@ -73,25 +82,35 @@ public class MovieRepository : IMovieRepository
         );
 
         foreach (var genre in genres)
-        {
             movie.Genres.Add(genre);
-        }
 
         return movie;
     }
 
-    public async Task<Movie?> GetBySlugAsync(string slug, CancellationToken token = default)
+    public async Task<Movie?> GetBySlugAsync(
+        string slug,
+        Guid? userId = null,
+        CancellationToken token = default
+    )
     {
         using var connection = await _dbConnectionFactory.CreateConnectionAsync(token);
         var movie = await connection.QuerySingleOrDefaultAsync<Movie>(
-            """select * from movies where slug = @slug""",
-            new { slug }
+            new CommandDefinition(
+                """
+                SELECT m.*, round(avg(r.rating),1) as rating, myr.rating as userrating
+                FROM movies
+                left join ratings r on m.id = r.movieid
+                left join ratings myr on m.id = myr.movieid and myr.userid = @userId
+                WHERE id = @slug
+                GROUP BY id, userrating
+                """,
+                new { slug, userId },
+                cancellationToken: token
+            )
         );
 
         if (movie is null)
-        {
             return null;
-        }
 
         var genres = await connection.QueryAsync<string>(
             new CommandDefinition(
@@ -104,23 +123,30 @@ public class MovieRepository : IMovieRepository
         );
 
         foreach (var genre in genres)
-        {
             movie.Genres.Add(genre);
-        }
 
         return movie;
     }
 
-    public async Task<IEnumerable<Movie>> GetAllAsync(CancellationToken token = default)
+    public async Task<IEnumerable<Movie>> GetAllAsync(
+        Guid? userId = null,
+        CancellationToken token = default
+    )
     {
         using var connection = await _dbConnectionFactory.CreateConnectionAsync(token);
         var result = await connection.QueryAsync(
             new CommandDefinition(
                 """
-                select n.*, string_agg(g.name,",") as genres
-                from movies n left join genres g on m.id = g.movieid 
+                select m.*, 
+                       string_agg(g.name,",") as genres, 
+                       round(avg(r.rating),1) as rating, 
+                       myr.rating as userrating
+                from movies m left join genres g on m.id = g.movieid
+                left join genres g on m.id = g.movieid
+                left join ratings r on m.id = r.movieid
+                left join ratings myr on m.id = myr.movieid and myr.userid = @userId
                 group by id
-                """,
+                """, new { userId },
                 cancellationToken: token
             )
         );
@@ -130,11 +156,16 @@ public class MovieRepository : IMovieRepository
             Id = movie.id,
             Title = movie.title,
             YearOfRelease = movie.yearofrelease,
-            Genres = Enumerable.ToList(movie.genres.Split(',')),
+            Rating = (float?)movie.rating,
+            UserRating = (int?)movie.userrating,
+            Genres = Enumerable.ToList(movie.genres.Split(','))
         });
     }
 
-    public async Task<bool> UpdateAsync(Movie movie, CancellationToken token = default)
+    public async Task<bool> UpdateAsync(
+        Movie movie,
+        CancellationToken token = default
+    )
     {
         using var connection = await _dbConnectionFactory.CreateConnectionAsync(token);
         using var transaction = connection.BeginTransaction();
@@ -150,7 +181,6 @@ public class MovieRepository : IMovieRepository
         );
 
         foreach (var genre in movie.Genres)
-        {
             await connection.ExecuteAsync(
                 new CommandDefinition(
                     """
@@ -161,7 +191,6 @@ public class MovieRepository : IMovieRepository
                     cancellationToken: token
                 )
             );
-        }
 
         var result = await connection.ExecuteAsync(
             new CommandDefinition(

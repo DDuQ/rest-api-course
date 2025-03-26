@@ -23,13 +23,13 @@ public class ValidationMappingMiddleware
             context.Response.StatusCode = StatusCodes.Status400BadRequest;
             var validationFailureResponse = new ValidationFailureResponse
             {
-                Errors = exception.Errors.Select(error => new ValidationResponse()
+                Errors = exception.Errors.Select(error => new ValidationResponse
                 {
                     PropertyName = error.PropertyName,
-                    Message = error.ErrorMessage,
-                }),
+                    Message = error.ErrorMessage
+                })
             };
-            
+
             await context.Response.WriteAsJsonAsync(validationFailureResponse);
         }
     }

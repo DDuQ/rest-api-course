@@ -2,5 +2,5 @@ namespace Movies.Contracts.Responses;
 
 public class MoviesResponse
 {
-    public required  IEnumerable<MovieResponse> Items { get; set; } =  [];   
+    public required IEnumerable<MovieResponse> Items { get; set; } = [];
 }

@@ -1,3 +1,5 @@
 namespace Movies.Application;
 
-public interface IAssemblyMarker { }
+public interface IAssemblyMarker
+{
+}
