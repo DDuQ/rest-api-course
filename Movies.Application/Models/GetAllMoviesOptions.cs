@@ -1,6 +1,8 @@
+using Movies.Contracts.Requests;
+
 namespace Movies.Application.Models;
 
-public class GetAllMoviesOptions
+public class GetAllMoviesOptions : PagedRequest
 {
     public string? Title { get; set; }
     public int? YearOfRelease { get; set; }

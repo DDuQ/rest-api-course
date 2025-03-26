@@ -10,6 +10,12 @@ public class GetAllMovieOptionsValidator : AbstractValidator<GetAllMoviesOptions
     
     public GetAllMovieOptionsValidator()
     {
+        RuleFor(m => m.Page)
+            .GreaterThanOrEqualTo(1);
+
+        RuleFor(m => m.PageSize)
+            .InclusiveBetween(1, 25);
+        
         RuleFor(m => m.SortField)
             .Must(sortField => sortField is null 
                                || AcceptableSortFields.Contains(sortField, StringComparer.OrdinalIgnoreCase))
