@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using Movies.API.Auth;
 using Movies.API.Mapping;
 using Movies.Application;
+using Movies.Application.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
@@ -55,10 +56,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseMiddleware<ValidationMappingMiddleware>();
-app.UseHttpsRedirection();
+app.MapControllers();
+
+var dbInitializer = app.Services.GetRequiredService<DbInitializer>();
+await dbInitializer.InitializeAsync();
 
 app.Run();
